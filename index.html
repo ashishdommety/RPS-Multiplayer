@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+          <h1 class="title">Rock, Paper, Scissors Online!</h1>
+          <input type="text" class="name">
+          <input type="submit" name="" value="Join">
+      </div>
+      <div class="row">
+        <div class="player1 col-md-4">
+          <p>Name of Player 1</p>
+          <h4>Choice</h4>
+          <p>Wins:<span id='pOneWins'></span></p>
+          <p>Losses:<span id='pOneLosses'></span></p>
+        </div>
+        <div class="decision col-md-4">
+
+        </div>
+        <div class="player2 col-md-4">
+          <p>Name of Player 2</p>
+          <h4>Choice</h4>
+          <p>Wins:<span id='pTwoWins'></span></p>
+          <p>Losses:<span id='pTwoLosses'></span></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="chat" id='chats'>
+        </div>
+        <div class="row">
+          <input type="text" name="" value="">
+          <input type="submit" name="" value="Send">
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.12.4.js" charset="utf-8"></script>
+    <script src="assets/js/game.js" charset="utf-8"></script>
+  </body>
+</html>

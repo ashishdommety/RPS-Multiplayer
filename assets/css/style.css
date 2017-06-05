@@ -1,0 +1,8 @@
+body{
+  background-color: lightgrey;
+  text-align: center;
+}
+#chats{
+  height:100px;
+  background-color: white;
+}
