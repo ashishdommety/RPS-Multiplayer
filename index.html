@@ -10,24 +10,32 @@
     <div class="container">
       <div class="row">
           <h1 class="title">Rock, Paper, Scissors Online!</h1>
-          <input type="text" class="name">
-          <input type="submit" name="" value="Join">
+          <input id='name' type="text" class="name">
+          <input id='nameSubmit' type="submit" name="" value="Join">
       </div>
       <div class="row">
         <div class="player1 col-md-4">
-          <p>Name of Player 1</p>
-          <h4>Choice</h4>
-          <p>Wins:<span id='pOneWins'></span></p>
-          <p>Losses:<span id='pOneLosses'></span></p>
+          <h3><span id='name1'></span></h3>
+          <h4><ol>
+            <li>rock</li>
+            <li>paper</li>
+            <li>scissors</li>
+          </ol></h4>
+          <p>Wins:<span id='p1Wins'></span></p>
+          <p>Losses:<span id='p1Losses'></span></p>
         </div>
         <div class="decision col-md-4">
 
         </div>
         <div class="player2 col-md-4">
-          <p>Name of Player 2</p>
-          <h4>Choice</h4>
-          <p>Wins:<span id='pTwoWins'></span></p>
-          <p>Losses:<span id='pTwoLosses'></span></p>
+          <h3><span id='name2'></span></h3>
+          <h4><ol>
+            <li>rock</li>
+            <li>paper</li>
+            <li>scissors</li>
+          </ol></h4>
+          <p>Wins:<span id='p2Wins'></span></p>
+          <p>Losses:<span id='p2Losses'></span></p>
         </div>
       </div>
       <div class="row">
@@ -40,6 +48,7 @@
       </div>
     </div>
     <script src="https://code.jquery.com/jquery-1.12.4.js" charset="utf-8"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.1/firebase.js"></script>
     <script src="assets/js/game.js" charset="utf-8"></script>
   </body>
 </html>
