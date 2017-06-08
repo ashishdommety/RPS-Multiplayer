@@ -6,3 +6,16 @@ body{
   height:100px;
   background-color: white;
 }
+.decision{
+  width: 200px;
+  height:200px;
+  background-color: lightgrey;
+}
+
+.gameArea{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  position: relative;
+  left:80px;
+}

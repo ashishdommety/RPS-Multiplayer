@@ -7,6 +7,8 @@ $(document).ready(function() {
   var p1losses;
   var p2wins;
   var p2losses;
+  var p1Choice;
+  var p2Choice;
 
   // Initialize Firebase
   var config = {
@@ -55,8 +57,7 @@ $(document).ready(function() {
         choice: $(this).data('ref')
       })
       console.log('p1 made their choice');
-    }
-    else if($(this).hasClass('p2Choice')){
+    } else if ($(this).hasClass('p2Choice')) {
       database.ref('players').child('2').update({
         choice: $(this).data('ref')
       })
@@ -64,41 +65,143 @@ $(document).ready(function() {
     }
   });
 
-
+  // console.log();
   //read data
   database.ref().on('value', getData, error);
 
   function getData(snapshot) {
     //code for entering new players
     var data = snapshot.val();
-    console.log('data: '+data);
-    console.log('num: '+num);
-    if(data === null){
+    // console.log('data: ' + data);
+    // console.log('num: ' + num);
+    if (data === null) {
       console.log('welcome! game has just begun');
-    }
-    else{
+    } else {
       num = data.playerCount.numberOfPlayers;
       if (num === 1) {
-        console.log('1st player is in');
-        console.log('num: '+ num);
+        $('#name1').text(data.players['1'].name);
       } else if (num === 2) {
-        console.log('2nd player is in, no more players allowed');
-        console.log('num: '+num);
+        $('#name1').text(data.players['1'].name);
+        $('#name2').text(data.players['2'].name);
+      }
+      p1Choice = data.players['1'].choice;
+      p2Choice = data.players['2'].choice;
+      console.log('p1s Choice is :' + p1Choice);
+      console.log('p2s Choice is :' + p2Choice);
+    }
+
+    //wins and losses
+    p1wins = data.players['1'].wins;
+    p2wins = data.players['2'].wins;
+    p1losses = data.players['1'].losses;
+    p2losses = data.players['2'].losses;
+
+    $('#p1Wins').text(p1wins);
+    $('#p1Losses').text(p1losses);
+    $('#p2Wins').text(p2wins);
+    $('#p2Losses').text(p2losses);
+
+    //code to compare choices made
+    if (p1Choice === undefined || p2Choice === undefined || p1Choice === '' || p2Choice === '') {
+      console.log('if all players have been entered, pick an option');
+    } else {
+      if (p1Choice === 'rock') {
+        if (p2Choice === 'scissors') {
+          console.log('p1 wins');
+          removeChoice();
+          database.ref('players/1').update({
+            wins: p1wins + 1
+          });
+          database.ref('players/2').update({
+            losses: p2losses + 1
+          });
+          $('#result').text(data.players['1'].name + ' wins!');
+        } else if (p2Choice === 'paper') {
+          console.log('p2 wins');
+          removeChoice();
+          database.ref('players/2').update({
+            wins: p2wins + 1
+          });
+          database.ref('players/1').update({
+            losses: p1losses + 1
+          });
+          $('#result').text(data.players['2'].name + ' wins!');
+        } else if (p2Choice === 'rock') {
+          console.log('draw');
+          $('#result').text("It's a draw!");
+          removeChoice();
+        }
+
+      } else if (p1Choice === 'paper') {
+        if (p2Choice === 'scissors') {
+          console.log('p2 wins');
+          removeChoice();
+          database.ref('players/2').update({
+            wins: p2wins + 1
+          });
+          database.ref('players/1').update({
+            losses: p1losses + 1
+          });
+          $('#result').text(data.players['2'].name + ' wins!');
+        } else if (p2Choice === 'paper') {
+          console.log('draw');
+          removeChoice();
+          $('#result').text("It's a draw!");
+        } else if (p2Choice === 'rock') {
+          console.log('p1 wins');
+          removeChoice();
+          database.ref('players/1').update({
+            wins: p1wins + 1
+          });
+          database.ref('players/2').update({
+            losses: p2losses + 1
+          });
+          $('#result').text(data.players['1'].name + ' wins!');
+        }
+      } else if (p1Choice === 'scissors') {
+        if (p2Choice === 'scissors') {
+          console.log('draw');
+          removeChoice();
+          $('#result').text("It's a draw!");
+        } else if (p2Choice === 'paper') {
+          console.log('p1 wins');
+          removeChoice();
+          database.ref('players/1').update({
+            wins: p1wins + 1
+          });
+          database.ref('players/2').update({
+            losses: p2losses + 1
+          });
+          $('#result').text(data.players['1'].name + ' wins!');
+        } else if (p2Choice === 'rock') {
+          console.log('p2 wins');
+          removeChoice();
+          database.ref('players/2').update({
+            wins: p2wins + 1
+          });
+          database.ref('players/1').update({
+            losses: p1losses + 1
+          });
+          $('#result').text(data.players['2'].name + ' wins!');
+        }
       }
     }
+
+
+    function removeChoice() {
+      database.ref('players').child('1/choice').remove();
+      database.ref('players').child('2/choice').remove();
+    }
   }
+
 
   function error(error) {
     console.log(error.code);
   }
 
-
-
-  // TODO: add chance functionality
-  // TODO: compare choices
-  // TODO: win option and lose option
+  // TODO: toggle chance so user knows who's turn it is
   // TODO: chat functionality
-  // TODO:
+  // TODO: user authentication????
 
 
 });
