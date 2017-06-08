@@ -1,92 +1,104 @@
-$(document).ready(function(){
+$(document).ready(function() {
   var player;
-  var num = 1;
+  var num;
+  var turn;
+
+  var p1wins;
+  var p1losses;
+  var p2wins;
+  var p2losses;
 
   // Initialize Firebase
-   var config = {
-     apiKey: "AIzaSyAKF_gYZ0W8d7c0P-mC7Iy6STg8DptxdQk",
-     authDomain: "multi-rps-2de78.firebaseapp.com",
-     databaseURL: "https://multi-rps-2de78.firebaseio.com",
-     projectId: "multi-rps-2de78",
-     storageBucket: "multi-rps-2de78.appspot.com",
-     messagingSenderId: "269890625687"
-   };
-   firebase.initializeApp(config);
+  var config = {
+    apiKey: "AIzaSyAKF_gYZ0W8d7c0P-mC7Iy6STg8DptxdQk",
+    authDomain: "multi-rps-2de78.firebaseapp.com",
+    databaseURL: "https://multi-rps-2de78.firebaseio.com",
+    projectId: "multi-rps-2de78",
+    storageBucket: "multi-rps-2de78.appspot.com",
+    messagingSenderId: "269890625687"
+  };
+  firebase.initializeApp(config);
 
-   var database = firebase.database();
+  var database = firebase.database();
 
-   var ref = database.ref('players');
 
-   function getPlayer(){
-      player = {
-       name:$('#name').val(),
-       wins:0,
-       losses:0,
-       choice:''
-     };
-   }
 
-   console.log(num);
-   $(document).on('click', '#nameSubmit',function(event){
-     event.preventDefault();
-     if(num > 2){
-       alert('players full');
-       //empty input field
-       $('#name').val('');
-     }
-     else{
-       //push to database
-       ref = database.ref('players/'+num);
-       getPlayer();
-       ref.push(player);
-       //empty input field
-       $('#name').val('');
-     }
-   });
+  $(document).on('click', '.nameSubmit, .p1Choice, .p2Choice', function() {
 
-   //read data
-   ref.on('value',getData,error);
+    if ($(this).hasClass('nameSubmit')) {
+      if (num === undefined) {
+        database.ref('players/1').set({
+          name: $('#name').val(),
+          wins: 0,
+          losses: 0
+        });
+        $('#name').val('');
+        database.ref('playerCount').set({
+          numberOfPlayers: 1
+        });
+      } else if (num === 1) {
+        database.ref('players/2').set({
+          name: $('#name').val(),
+          wins: 0,
+          losses: 0
+        });
+        $('#name').val('');
+        database.ref('playerCount').set({
+          numberOfPlayers: 2
+        })
+      } else if (num === 2) {
+        alert('players full');
+        $('#name').val('');
+      }
+    } else if ($(this).hasClass('p1Choice')) {
+      database.ref('players').child('1').update({
+        choice: $(this).data('ref')
+      })
+      console.log('p1 made their choice');
+    }
+    else if($(this).hasClass('p2Choice')){
+      database.ref('players').child('2').update({
+        choice: $(this).data('ref')
+      })
+      console.log('p2 made their choice');
+    }
+  });
 
-   function getData(snapshot){
 
-     //find way to make this code more DRY
-     var fatherObj = snapshot.val()[1];
-     var motherObj = snapshot.val()[2];
-     var fatherSize = Object.keys(fatherObj).length;
-     var motherSize = Object.keys(motherObj).length;
-     if(fatherSize === 1){
-       num = 2;
-     }
-     if(motherSize === 1){
-       num = 3;
-     }
-     console.log(motherSize);
-     //get values to screen
-     for (var i = 1; i < 3; i++){
-       //for names
-       var obj = snapshot.val()[i];
-       var key = Object.keys(obj);
-       var name = obj[key[0]].name;
-       var wins = obj[key[0]].wins;
-       var losses = obj[key[0]].losses;
-      //change player details
-       $('#name'+i).text(name);
-       $('#p'+i+'Wins').text(wins);
-       $('#p'+i+'Losses').text(losses);
-     }
+  //read data
+  database.ref().on('value', getData, error);
 
-   }
-   function error(){
-     console.log('error');
-   }
+  function getData(snapshot) {
+    //code for entering new players
+    var data = snapshot.val();
+    console.log('data: '+data);
+    console.log('num: '+num);
+    if(data === null){
+      console.log('welcome! game has just begun');
+    }
+    else{
+      num = data.playerCount.numberOfPlayers;
+      if (num === 1) {
+        console.log('1st player is in');
+        console.log('num: '+ num);
+      } else if (num === 2) {
+        console.log('2nd player is in, no more players allowed');
+        console.log('num: '+num);
+      }
+    }
+  }
 
-// TODO: Display choices
-// TODO: push clicked choice to the database
-// TODO: add chance functionality
-// TODO: compare choices
-// TODO: win option and lose option
-// TODO: chat functionality
-// TODO:
+  function error(error) {
+    console.log(error.code);
+  }
+
+
+
+  // TODO: add chance functionality
+  // TODO: compare choices
+  // TODO: win option and lose option
+  // TODO: chat functionality
+  // TODO:
 
 
 });

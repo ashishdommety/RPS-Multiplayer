@@ -11,16 +11,16 @@
       <div class="row">
           <h1 class="title">Rock, Paper, Scissors Online!</h1>
           <input id='name' type="text" class="name">
-          <input id='nameSubmit' type="submit" name="" value="Join">
+          <input id='nameSubmit' class='nameSubmit' type="submit" name="" value="Join">
       </div>
       <div class="row">
         <div class="player1 col-md-4">
           <h3><span id='name1'></span></h3>
-          <h4><ol>
-            <li>rock</li>
-            <li>paper</li>
-            <li>scissors</li>
-          </ol></h4>
+          <h4>
+            <button type="button" name="button" class='p1Choice' data-ref='rock'>rock</button>
+            <button type="button" name="button" class='p1Choice' data-ref='paper'>paper</button>
+            <button type="button" name="button" class='p1Choice' data-ref='scissors'>scissors</button>
+          </h4>
           <p>Wins:<span id='p1Wins'></span></p>
           <p>Losses:<span id='p1Losses'></span></p>
         </div>
@@ -29,11 +29,11 @@
         </div>
         <div class="player2 col-md-4">
           <h3><span id='name2'></span></h3>
-          <h4><ol>
-            <li>rock</li>
-            <li>paper</li>
-            <li>scissors</li>
-          </ol></h4>
+          <h4>
+            <button type="button" name="button" class='p2Choice' data-ref='rock'>rock</button>
+            <button type="button" name="button" class='p2Choice' data-ref='paper'>paper</button>
+            <button type="button" name="button" class='p2Choice' data-ref='scissors'>scissors</button>
+          </h4>
           <p>Wins:<span id='p2Wins'></span></p>
           <p>Losses:<span id='p2Losses'></span></p>
         </div>
