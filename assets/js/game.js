@@ -2,7 +2,6 @@ $(document).ready(function() {
   var player;
   var num;
   var turn;
-
   var p1wins;
   var p1losses;
   var p2wins;
@@ -23,10 +22,7 @@ $(document).ready(function() {
 
   var database = firebase.database();
 
-
-
-  $(document).on('click', '.nameSubmit, .p1Choice, .p2Choice', function() {
-
+  $(document).on('click', '.nameSubmit, .p1Choice, .p2Choice, .p1Leave, .p2Leave', function() {
     if ($(this).hasClass('nameSubmit')) {
       if (num === undefined) {
         database.ref('players/1').set({
@@ -53,19 +49,36 @@ $(document).ready(function() {
         $('#name').val('');
       }
     } else if ($(this).hasClass('p1Choice')) {
+      database.ref('turnToggle').set({
+        turn: 'player2'
+      });
       database.ref('players').child('1').update({
         choice: $(this).data('ref')
-      })
+      });
       console.log('p1 made their choice');
     } else if ($(this).hasClass('p2Choice')) {
+      database.ref('turnToggle').set({
+        turn: 'player1'
+      });
       database.ref('players').child('2').update({
         choice: $(this).data('ref')
       })
       console.log('p2 made their choice');
     }
+    // else if($(this).hasClass('p1Leave')){
+    //   database.ref('players').child('1').remove();
+    //   database.ref('playerCount').set({
+    //     numberOfPlayers: 1
+    //   })
+    // }
+    // else if($(this).hasClass('p2Leave')){
+    //   database.ref('players').child('2').remove();
+    //   database.ref('playerCount').set({
+    //     numberOfPlayers: 1
+    //   })
+    // }
   });
 
-  // console.log();
   //read data
   database.ref().on('value', getData, error);
 
@@ -187,6 +200,15 @@ $(document).ready(function() {
       }
     }
 
+    //toggle choices
+    if(data.turnToggle.turn === 'player1' || data.turnToggle.turn === undefined){
+      $('.player1').addClass('highlight');
+      $('.player2').removeClass('highlight');
+    }
+    else if(data.turnToggle.turn === 'player2'){
+      $('.player2').addClass('highlight');
+      $('.player1').removeClass('highlight');
+    }
 
     function removeChoice() {
       database.ref('players').child('1/choice').remove();
@@ -194,12 +216,11 @@ $(document).ready(function() {
     }
   }
 
-
   function error(error) {
     console.log(error.code);
   }
 
-  // TODO: toggle chance so user knows who's turn it is
+// TODO: option to let players leave
   // TODO: chat functionality
   // TODO: user authentication????
 
